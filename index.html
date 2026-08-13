@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Fundamentos de Diseño Gráfico — Plan de aula</title>
+<meta name="description" content="Plan de aula, reglas de curso y sistema de evaluación — Fundamentos de Diseño Gráfico.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /*
+    Deck fijado en light mode a propósito: es material para proyectar en clase
+    y no debe cambiar de apariencia según el modo del sistema del computador
+    donde se presente.
+
+    Tipografías con fallback a system fonts por si el salón no tiene internet.
+  */
+  :root {
+    color-scheme: light;
+    --paper: #F2F4F5;
+    --paper-raised: #FFFFFF;
+    --ink: #121316;
+    --muted: #5B5F66;
+    --line: #D7DADD;
+    --red: #D6231D;
+    --red-ink: #FFFFFF;
+    --red-wash: #FBE9E8;
+
+    --font-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+
+    --gutter: clamp(24px, 6vw, 96px);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    color-scheme: light;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; }
+
+  /* ---------- Deck mechanics ---------- */
+  .deck {
+    height: 100dvh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .deck { scroll-behavior: auto; }
+  }
+
+  .slide {
+    min-height: 100dvh;
+    width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(72px, 10vh, 120px) var(--gutter);
+    position: relative;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: clamp(12px, 1.1vw, 14px);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin: 0 0 18px;
+  }
+
+  .section-index {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: clamp(12px, 1.1vw, 14px);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid var(--red);
+    border-radius: 999px;
+    padding: 5px 14px;
+    margin: 0 0 22px;
+  }
+
+  .slide-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 4.6vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 clamp(28px, 4vw, 48px);
+    text-wrap: balance;
+    max-width: 20ch;
+  }
+
+  /* ---------- Slide 1 — title ---------- */
+  .slide--title .title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    margin: 0 0 clamp(36px, 6vw, 64px);
+    text-wrap: balance;
+    max-width: 16ch;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(24px, 5vw, 56px);
+    margin: 0 0 clamp(32px, 5vw, 48px);
+    padding: 0;
+  }
+  .meta-row > div { display: flex; flex-direction: column; gap: 4px; }
+  .meta-row dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .meta-row dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: clamp(18px, 2vw, 22px);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .docente {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 14px;
+    padding-top: clamp(22px, 4vw, 30px);
+    border-top: 1px solid var(--line);
+    max-width: 720px;
+  }
+  .docente__name { margin: 0; font-weight: 600; font-size: 1.1rem; }
+  .docente__email {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .docente__email a { text-decoration: underline; text-underline-offset: 3px; }
+  .docente__email a:hover { color: var(--red); }
+
+  .hint {
+    position: absolute;
+    left: var(--gutter);
+    bottom: clamp(28px, 5vh, 48px);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Slide 2 — perfil docente ---------- */
+  .perfil {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 56px);
+    align-items: start;
+    max-width: 1100px;
+  }
+  @media (min-width: 900px) {
+    .perfil { grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr); }
+  }
+
+  .perfil__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 4.2vw, 3rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .perfil__role {
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    color: var(--muted);
+    margin: 0 0 clamp(22px, 3vw, 30px);
+    max-width: 34ch;
+  }
+  .perfil__lead {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.55;
+    max-width: 46ch;
+    margin: 0;
+    padding-top: clamp(18px, 2.4vw, 24px);
+    border-top: 3px solid var(--ink);
+  }
+  .perfil__lead b { font-weight: 600; }
+
+  .ficha {
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    margin: 0;
+    padding: clamp(18px, 2.4vw, 28px) clamp(20px, 2.6vw, 30px);
+  }
+  .ficha__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px 18px;
+    padding: clamp(11px, 1.5vw, 14px) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 520px) {
+    .ficha__row { grid-template-columns: 13ch minmax(0, 1fr); align-items: baseline; }
+  }
+  .ficha__row:first-child { padding-top: 0; }
+  .ficha__row:last-child { border-bottom: none; padding-bottom: 0; }
+  .ficha dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ficha dd {
+    margin: 0;
+    font-size: clamp(0.95rem, 1.35vw, 1.05rem);
+    line-height: 1.4;
+  }
+  .ficha dd a { text-decoration: underline; text-underline-offset: 3px; }
+  .ficha dd a:hover { color: var(--red); }
+  .ficha .mono { font-family: var(--font-mono); font-size: 0.95em; }
+
+  /* ---------- Agenda ---------- */
+  .agenda {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+  }
+  .agenda li {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(20px, 3vw, 36px);
+    padding: clamp(16px, 2.4vw, 22px) 0;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  }
+  .agenda li:first-child { padding-top: 0; }
+  .agenda__num {
+    font-family: var(--font-mono);
+    font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+    color: var(--red);
+    flex-shrink: 0;
+    width: 2.4ch;
+  }
+
+  /* ---------- Rules ---------- */
+  .big-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(20px, 3vw, 30px);
+    max-width: 900px;
+  }
+  .big-list li {
+    position: relative;
+    padding-left: clamp(24px, 2.6vw, 32px);
+    font-size: clamp(1.1rem, 2.1vw, 1.55rem);
+    line-height: 1.4;
+  }
+  .big-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 9px;
+    height: 9px;
+    background: var(--red);
+  }
+  .big-list li b { font-weight: 600; }
+
+  .big-list--tight li { font-size: clamp(1rem, 1.6vw, 1.2rem); }
+  .big-list--tight { gap: clamp(14px, 2vw, 18px); }
+
+  .norma {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: clamp(22px, 3vw, 30px) 0 0;
+  }
+
+  /* ---------- Asistencia: regla del 20% ---------- */
+  .asistencia {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(26px, 3.5vw, 48px);
+    align-items: start;
+    max-width: 1100px;
+  }
+  @media (min-width: 900px) {
+    .asistencia { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr); }
+  }
+
+  .regla {
+    border: 1px solid var(--ink);
+    background: var(--paper-raised);
+    padding: clamp(20px, 2.6vw, 30px);
+  }
+  .regla__figure {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(3.4rem, 9vw, 6rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--red);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .regla__text {
+    margin: 0;
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.45;
+    max-width: 32ch;
+  }
+  .regla__text b { font-weight: 600; }
+
+  .sesiones { margin-top: clamp(20px, 2.6vw, 26px); }
+  .sesiones__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  .sesiones__cell {
+    width: clamp(14px, 1.8vw, 20px);
+    height: clamp(14px, 1.8vw, 20px);
+    background: var(--ink);
+  }
+  .sesiones__cell--margen { background: var(--red-wash); border: 1.5px solid var(--red); }
+  .sesiones__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .sesiones__legend span { display: flex; align-items: center; gap: 8px; }
+  .swatch { width: 11px; height: 11px; flex-shrink: 0; }
+  .swatch--ink { background: var(--ink); }
+  .swatch--margen { background: var(--red-wash); border: 1.5px solid var(--red); }
+
+  /* ---------- Evaluation ---------- */
+  .evaluation__lead {
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    margin: 0 0 clamp(28px, 4vw, 40px);
+  }
+
+  .bar {
+    display: flex;
+    width: 100%;
+    max-width: 980px;
+    height: clamp(48px, 7vw, 72px);
+    border: 1px solid var(--ink);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .bar__segment {
+    flex-grow: var(--w);
+    flex-basis: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--red);
+    color: var(--red-ink);
+    font-family: var(--font-mono);
+    font-size: clamp(12px, 1.3vw, 16px);
+    letter-spacing: 0.02em;
+    border-right: 1px solid var(--paper);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .bar__segment:last-child { border-right: none; }
+  .bar__segment--ink { background: var(--ink); color: var(--paper); }
+  .bar__segment--muted { background: var(--muted); color: var(--paper); }
+
+  .bar__caption {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .corte {
+    max-width: 820px;
+    width: 100%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+  }
+  .corte > header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: clamp(18px, 2.4vw, 26px) clamp(22px, 3vw, 32px);
+    border-bottom: 3px solid var(--ink);
+  }
+  .corte__num {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .corte__weight {
+    font-family: var(--font-mono);
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--red);
+  }
+  .corte__items {
+    padding: clamp(4px, 1vw, 8px) clamp(22px, 3vw, 32px) clamp(20px, 2.6vw, 28px);
+    display: flex;
+    flex-direction: column;
+  }
+  .corte-item { padding: clamp(16px, 2vw, 22px) 0; border-bottom: 1px solid var(--line); }
+  .corte-item:last-child { border-bottom: none; }
+  .corte-item__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .corte-item__name { font-size: clamp(1rem, 1.6vw, 1.25rem); font-weight: 500; }
+  .corte-item__pct {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .corte-item__note {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .meter { height: 6px; background: var(--line); width: 100%; }
+  .meter > span { display: block; height: 100%; background: var(--red); width: calc(var(--pct) * 1%); }
+
+  /* ---------- Closing slide ---------- */
+  .slide--close .slide-title { max-width: 14ch; }
+  .contact-recap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    color: var(--muted);
+  }
+  .contact-recap a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .contact-recap a:hover { color: var(--red); }
+
+  /* ---------- Chrome: frame, progress, counter, dots, controls ---------- */
+  .frame { position: fixed; inset: 0; pointer-events: none; z-index: 25; }
+  .frame__tick { position: absolute; width: 20px; height: 20px; }
+  .frame__tick--tl { top: 14px; left: 14px; border-top: 1.5px solid var(--muted); border-left: 1.5px solid var(--muted); }
+  .frame__tick--tr { top: 14px; right: 14px; border-top: 1.5px solid var(--muted); border-right: 1.5px solid var(--muted); }
+
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--red);
+    width: 9%;
+    z-index: 30;
+    transition: width 0.25s ease;
+  }
+  @media (prefers-reduced-motion: reduce) { .progress { transition: none; } }
+
+  .counter {
+    position: fixed;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    border: 1px solid var(--line);
+    padding: 4px 12px;
+    z-index: 30;
+  }
+
+  .brandmark {
+    position: fixed;
+    bottom: 20px;
+    left: var(--gutter);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 30;
+    display: none;
+  }
+
+  .dots {
+    position: fixed;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 30;
+  }
+  .dots__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--muted);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+  .dots__dot.is-active { background: var(--red); border-color: var(--red); width: 10px; height: 10px; }
+  .dots__dot:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+  .controls { position: fixed; bottom: 20px; right: 24px; display: flex; gap: 8px; z-index: 30; }
+  .controls button {
+    width: 40px; height: 40px;
+    border: 1px solid var(--ink);
+    background: var(--paper-raised);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .controls button:hover { background: var(--ink); color: var(--paper); }
+  .controls button:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+  .controls button:disabled { opacity: 0.35; cursor: default; }
+  .controls button:disabled:hover { background: var(--paper-raised); color: var(--ink); }
+
+  @media (min-width: 720px) {
+    .brandmark { display: block; }
+  }
+  @media (max-width: 560px) {
+    .dots { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="frame" aria-hidden="true">
+  <span class="frame__tick frame__tick--tl"></span>
+  <span class="frame__tick frame__tick--tr"></span>
+</div>
+<div class="progress" id="progress"></div>
+<div class="counter" id="counter">01 / 11</div>
+<div class="brandmark">Fundamentos de Diseño Gráfico</div>
+<nav class="dots" id="dots" aria-label="Navegación de diapositivas"></nav>
+<div class="controls">
+  <button type="button" id="prevBtn" aria-label="Diapositiva anterior">‹</button>
+  <button type="button" id="nextBtn" aria-label="Siguiente diapositiva">›</button>
+</div>
+
+<main class="deck" id="deck">
+
+  <section class="slide slide--title" id="slide-1" data-title="Portada">
+    <p class="eyebrow">Plan de aula · Primera clase</p>
+    <h1 class="title">Fundamentos de<br>Diseño Gráfico</h1>
+    <dl class="meta-row">
+      <div><dt>Créditos</dt><dd>3</dd></div>
+      <div><dt>Facultad</dt><dd>Ingeniería</dd></div>
+      <div><dt>Universidad</dt><dd>Uniguajira</dd></div>
+    </dl>
+    <div class="docente">
+      <p class="docente__name">Eduardo Luis Sierra Fragozo</p>
+      <p class="docente__email"><a href="mailto:esierra@uniguajira.edu.co">esierra@uniguajira.edu.co</a></p>
+    </div>
+    <p class="hint">Desliza o pulsa → para continuar</p>
+  </section>
+
+  <section class="slide" id="slide-2" data-title="Quién les dicta el curso">
+    <p class="eyebrow">Quién les dicta el curso</p>
+    <div class="perfil">
+      <div>
+        <h2 class="perfil__name">Eduardo Luis<br>Sierra Fragozo</h2>
+        <p class="perfil__role">Docente de la Facultad de Ingeniería, Universidad de La Guajira. Líder del semillero de investigación R.E.D. Tech.</p>
+        <p class="perfil__lead">Trabajo en <b>gráficos por computador, inteligencia artificial y desarrollo de videojuegos</b>. Este curso lo doy desde ahí: el diseño como un sistema de decisiones que se puede argumentar, no como cuestión de gusto.</p>
+      </div>
+      <dl class="ficha">
+        <div class="ficha__row">
+          <dt>Formación</dt>
+          <dd>Ingeniero en Entretenimiento Digital — Uniguajira<br>Magíster en Inteligencia Artificial — UNIR, España</dd>
+        </div>
+        <div class="ficha__row">
+          <dt>También dicto</dt>
+          <dd>Programación Avanzada · Desarrollo de Videojuegos (Unity)</dd>
+        </div>
+        <div class="ficha__row">
+          <dt>Investigación</dt>
+          <dd>Semillero R.E.D. Tech — renderizado, IA aplicada y tecnología inclusiva</dd>
+        </div>
+        <div class="ficha__row">
+          <dt>Correo</dt>
+          <dd class="mono"><a href="mailto:esierra@uniguajira.edu.co">esierra@uniguajira.edu.co</a></dd>
+        </div>
+        <div class="ficha__row">
+          <dt>Portafolio</dt>
+          <dd class="mono"><a href="https://sierraeduardo.com" target="_blank" rel="noopener">sierraeduardo.com</a> · github.com/eduardosierraf</dd>
+        </div>
+        <div class="ficha__row">
+          <dt>Atención</dt>
+          <dd>Después de clase o por correo institucional — respondo en días hábiles</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-3" data-title="Agenda">
+    <p class="eyebrow">Hoy vemos</p>
+    <h2 class="slide-title">Agenda de la clase</h2>
+    <ol class="agenda">
+      <li><span class="agenda__num">01</span><span>Bienvenida y presentación del curso</span></li>
+      <li><span class="agenda__num">02</span><span>Reglas de trabajo: asistencia, entregas, celular e IA</span></li>
+      <li><span class="agenda__num">03</span><span>Sistema de evaluación: los tres cortes</span></li>
+      <li><span class="agenda__num">04</span><span>Preguntas y cierre</span></li>
+    </ol>
+  </section>
+
+  <section class="slide" id="slide-4" data-title="Asistencia">
+    <span class="section-index">Reglas · 1 de 3</span>
+    <h2 class="slide-title">Asistencia</h2>
+    <div class="asistencia">
+      <div class="regla">
+        <span class="regla__figure">20%</span>
+        <p class="regla__text">Con <b>más del 20% de fallas</b> sobre las horas programadas se pierde el curso por inasistencia y la nota queda en <b>0.0</b>. No es criterio mío: es el Reglamento Estudiantil.</p>
+        <div class="sesiones">
+          <div class="sesiones__grid" id="sesionesGrid" role="img" aria-label="Representación de las sesiones del curso y el margen máximo de inasistencia."></div>
+          <p class="sesiones__legend">
+            <span><i class="swatch swatch--ink"></i><em id="legendAsiste" style="font-style:normal"></em></span>
+            <span><i class="swatch swatch--margen"></i><em id="legendMargen" style="font-style:normal"></em></span>
+          </p>
+        </div>
+      </div>
+      <ul class="big-list big-list--tight">
+        <li><b>Tolerancia de 10 minutos.</b> Después de ese margen la llegada cuenta como media falla; dos retardos suman una falla completa.</li>
+        <li>Las <b>excusas se radican con soporte</b> dentro de los 3 días hábiles siguientes. Sin soporte radicado, la falla queda registrada.</li>
+        <li>La asistencia se toma en <b>cada sesión</b> y queda en el registro institucional. Lo que está en el sistema es lo que cuenta al final del semestre.</li>
+        <li>Faltar no aplaza las entregas: los plazos del cronograma siguen corriendo.</li>
+      </ul>
+    </div>
+    <p class="norma">Reglamento Estudiantil de Pregrado · Universidad de La Guajira · Acuerdo 026 de 2018</p>
+  </section>
+
+  <section class="slide" id="slide-5" data-title="Entrega de trabajos">
+    <span class="section-index">Reglas · 2 de 3</span>
+    <h2 class="slide-title">Entrega de trabajos</h2>
+    <ul class="big-list">
+      <li>Entregas por la plataforma indicada, en la <b>fecha y hora exacta</b> del cronograma. No se reciben por correo salvo excepción avisada.</li>
+      <li>Retraso sin excusa válida: <b>−10% por día</b>, hasta 3 días. Pasado ese plazo el trabajo no se recibe y la nota es <b>0.0</b>.</li>
+      <li>Todo trabajo incluye <b>proceso</b> (bocetos, iteraciones, referencias) además de la pieza final — el proceso también se califica.</li>
+    </ul>
+  </section>
+
+  <section class="slide" id="slide-6" data-title="Celular y uso de IA">
+    <span class="section-index">Reglas · 3 de 3</span>
+    <h2 class="slide-title">Celular y uso de IA</h2>
+    <ul class="big-list">
+      <li>Celular en silencio durante la clase; se usa solo cuando la actividad lo requiere (referencias, moodboards, cámara).</li>
+      <li>La <b>IA generativa se permite como apoyo</b> de ideación y research, pero debe <b>declararse en la entrega</b>. La ejecución y el criterio final son del estudiante.</li>
+      <li>Presentar como propio un trabajo generado íntegramente por IA sin declararlo se considera <b>fraude académico</b>, con las consecuencias que fija el reglamento.</li>
+    </ul>
+  </section>
+
+  <section class="slide" id="slide-7" data-title="Evaluación — resumen">
+    <span class="section-index">Evaluación</span>
+    <h2 class="slide-title">Cómo se compone la nota final</h2>
+    <p class="evaluation__lead">Tres cortes suman el 100% de la nota final, en la distribución que fija la Universidad. Cada corte se detalla en los productos que lo componen.</p>
+    <div class="bar" role="img" aria-label="Distribución de cortes: Corte 1, 30 por ciento. Corte 2, 35 por ciento. Corte 3, 35 por ciento.">
+      <div class="bar__segment" style="--w:30">Corte 1 · 30%</div>
+      <div class="bar__segment bar__segment--ink" style="--w:35">Corte 2 · 35%</div>
+      <div class="bar__segment bar__segment--muted" style="--w:35">Corte 3 · 35%</div>
+    </div>
+    <p class="bar__caption">30 + 35 + 35 = 100% de la nota final</p>
+    <p class="norma">Distribución institucional de cortes · Reglamento Estudiantil, Acuerdo 026 de 2018 · Calificación de 0.0 a 5.0</p>
+  </section>
+
+  <section class="slide" id="slide-8" data-title="Corte 1">
+    <span class="section-index">Evaluación · Corte 1</span>
+    <h2 class="slide-title">Corte 1</h2>
+    <div class="corte">
+      <header><span class="corte__num">Total del corte</span><span class="corte__weight">30%</span></header>
+      <div class="corte__items">
+        <div class="corte-item">
+          <div class="corte-item__row"><span class="corte-item__name">Póster</span><span class="corte-item__pct">15.0%</span></div>
+          <div class="meter"><span style="--pct:50"></span></div>
+          <span class="corte-item__note">50% del corte</span>
+        </div>
+        <div class="corte-item">
+          <div class="corte-item__row"><span class="corte-item__name">Actividades</span><span class="corte-item__pct">7.5%</span></div>
+          <div class="meter"><span style="--pct:25"></span></div>
+          <span class="corte-item__note">25% del corte</span>
+        </div>
+        <div class="corte-item">
+          <div class="corte-item__row"><span class="corte-item__name">Demostración creativa</span><span class="corte-item__pct">7.5%</span></div>
+          <div class="meter"><span style="--pct:25"></span></div>
+          <span class="corte-item__note">25% del corte</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-9" data-title="Corte 2">
+    <span class="section-index">Evaluación · Corte 2</span>
+    <h2 class="slide-title">Corte 2</h2>
+    <div class="corte">
+      <header><span class="corte__num">Total del corte</span><span class="corte__weight">35%</span></header>
+      <div class="corte__items">
+        <div class="corte-item">
+          <div class="corte-item__row"><span class="corte-item__name">Manual de marca</span><span class="corte-item__pct">15.0%</span></div>
+          <div class="meter"><span style="--pct:43"></span></div>
+          <span class="corte-item__note">43% del corte</span>
+        </div>
+        <div class="corte-item">
+          <div class="corte-item__row"><span class="corte-item__name">Prototipo inicial en Figma</span><span class="corte-item__pct">20.0%</span></div>
+          <div class="meter"><span style="--pct:57"></span></div>
+          <span class="corte-item__note">57% del corte</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-10" data-title="Corte 3">
+    <span class="section-index">Evaluación · Corte 3</span>
+    <h2 class="slide-title">Corte 3</h2>
+    <div class="corte">
+      <header><span class="corte__num">Total del corte</span><span class="corte__weight">35%</span></header>
+      <div class="corte__items">
+        <div class="corte-item">
+          <div class="corte-item__row"><span class="corte-item__name">Página web</span><span class="corte-item__pct">25.0%</span></div>
+          <div class="meter"><span style="--pct:71"></span></div>
+          <span class="corte-item__note">71% del corte</span>
+        </div>
+        <div class="corte-item">
+          <div class="corte-item__row"><span class="corte-item__name">Publicación en GitHub Pages</span><span class="corte-item__pct">10.0%</span></div>
+          <div class="meter"><span style="--pct:29"></span></div>
+          <span class="corte-item__note">29% del corte</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide slide--close" id="slide-11" data-title="Preguntas">
+    <p class="eyebrow">Para cerrar</p>
+    <h2 class="slide-title">¿Preguntas?</h2>
+    <div class="contact-recap">
+      <span>Eduardo Luis Sierra Fragozo</span>
+      <span><a href="mailto:esierra@uniguajira.edu.co">esierra@uniguajira.edu.co</a></span>
+      <span><a href="https://sierraeduardo.com" target="_blank" rel="noopener">sierraeduardo.com</a></span>
+      <span>Fundamentos de Diseño Gráfico · Universidad de La Guajira</span>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   AJUSTA AQUÍ los datos reales del curso.
+   El gráfico y los textos de la diapositiva de asistencia se
+   calculan solos a partir de estos dos números.
+   ───────────────────────────────────────────────────────────── */
+var CURSO = {
+  horasProgramadas: 48,   // horas presenciales del semestre (3 créditos ≈ 48 h)
+  horasPorSesion: 2       // duración de cada sesión de clase
+};
+
+(function () {
+  var totalSesiones = Math.round(CURSO.horasProgramadas / CURSO.horasPorSesion);
+  var horasMargen = Math.floor(CURSO.horasProgramadas * 0.2);
+  var sesionesMargen = Math.floor(horasMargen / CURSO.horasPorSesion);
+  var grid = document.getElementById('sesionesGrid');
+
+  for (var i = 0; i < totalSesiones; i++) {
+    var cell = document.createElement('span');
+    cell.className = 'sesiones__cell' + (i >= totalSesiones - sesionesMargen ? ' sesiones__cell--margen' : '');
+    grid.appendChild(cell);
+  }
+  grid.setAttribute('aria-label',
+    'El curso tiene ' + totalSesiones + ' sesiones. El margen máximo de inasistencia es de ' +
+    sesionesMargen + ' sesiones, equivalentes a ' + horasMargen + ' horas.');
+
+  document.getElementById('legendAsiste').textContent =
+    totalSesiones + ' sesiones · ' + CURSO.horasProgramadas + ' horas programadas';
+  document.getElementById('legendMargen').textContent =
+    'Margen máximo: ' + sesionesMargen + ' sesiones (' + horasMargen + ' h). A partir de ahí, curso perdido';
+})();
+
+(function () {
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var dotsWrap = document.getElementById('dots');
+  var counter = document.getElementById('counter');
+  var progress = document.getElementById('progress');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var total = slides.length;
+  var current = 0;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  slides.forEach(function (slide, i) {
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'dots__dot';
+    dot.setAttribute('aria-label', 'Ir a: ' + (slide.dataset.title || ('Diapositiva ' + (i + 1))));
+    dot.addEventListener('click', function () { goTo(i); });
+    dotsWrap.appendChild(dot);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function setActive(i) {
+    current = i;
+    dots.forEach(function (d, idx) { d.classList.toggle('is-active', idx === i); });
+    if (dots[i]) dots[i].setAttribute('aria-current', 'true');
+    dots.forEach(function (d, idx) { if (idx !== i) d.removeAttribute('aria-current'); });
+    counter.textContent = pad(i + 1) + ' / ' + pad(total);
+    progress.style.width = (((i + 1) / total) * 100) + '%';
+    prevBtn.disabled = i === 0;
+    nextBtn.disabled = i === total - 1;
+  }
+
+  function goTo(i) {
+    var target = Math.min(Math.max(i, 0), total - 1);
+    slides[target].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+        setActive(slides.indexOf(entry.target));
+      }
+    });
+  }, { root: deck, threshold: [0.6] });
+  slides.forEach(function (s) { io.observe(s); });
+
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].indexOf(e.key) > -1) {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].indexOf(e.key) > -1) {
+      e.preventDefault();
+      goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    }
+  });
+
+  prevBtn.addEventListener('click', function () { goTo(current - 1); });
+  nextBtn.addEventListener('click', function () { goTo(current + 1); });
+
+  setActive(0);
+})();
+</script>
+</body>
+</html>
